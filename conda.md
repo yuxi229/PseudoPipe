@@ -23,25 +23,34 @@ To cite Pseudopipe, please refer to the following publication:
 
 ## Step 1. Install PseudoPipe via Conda
 
-### Option A: Install from your Conda channel
+### Option A: Install from Conda channel (recommended)
+
+You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel:
 
 ```bash
-conda install -c <your-channel> pseudopipe
+conda install -c yuxi229 pseudopipe
 ```
+### Option B: Build from source using conda-build
 
-
-### Option B: Build and install locally for testing
 ```bash
-conda build recipe
+# Install conda-build if not already installed
+conda install conda-build
+
+# Clone your repo
+git clone https://github.com/<your-username>/PseudoPipe.git
+cd PseudoPipe
+
+# Build the package locally
+conda build recipe/
+
+# Install the built package into a new environment
+# Optional: Create and activate environment from environment.yml
+
+conda create -n pseudopipe-env python=3.11
+conda activate pseudopipe-env
 conda install --use-local pseudopipe
 ```
 
-Optional: Create and activate environment from environment.yml
-
-```bash
-conda env create -f environment.yml
-conda activate pseudopipe-env
-```
 ---
 
 ## Step 2. Prepare Working Directories
