@@ -1,5 +1,13 @@
 # PseudoPipe – Conda Installation and Usage
 
+When you predict pseudogenes using PseudoPipe first time, we suggest you to run PseudoPipe step by step.
+
+Here shows an example of using PseudoPipe to predict pseudogenes in chimpanzee.
+
+To cite Pseudopipe, please refer to the following publication:
+
+Zhang Z, Carriero N, Zheng D, Karro J, Harrison PM, Gerstein M. PseudoPipe: an automated pseudogene identification pipeline. Bioinformatics. 2006 Jun 15;22(12):1437-9.
+
 ---
 
 ## Step 0. Requirements
@@ -7,7 +15,7 @@
 - Unix-like OS (tested on Ubuntu, bash shell)  
 - Python ≥ 3.1 (installed via Conda)  
 - BLAST+ 2.16.0 (installed via Conda)  
-- FASTA ≥ 36.6.8 (specifically `tfasty35` — **not included in Conda**, install manually from [FASTA download page](https://fasta.bioch.virginia.edu/fasta_www2/fasta_list2.shtml))  
+- FASTA 35.1.5 (specifically `tfasty35` — **not included in Conda**, install manually from [FASTA download page](https://fasta.bioch.virginia.edu/wrpearson/fasta/fasta33-35/))  
 - PseudoPipe (installed via Conda package)  
 
 ---
@@ -36,9 +44,16 @@ conda activate pseudopipe-env
 
 ## Step 2. Prepare Working Directories
 
+ Create an input and output directories
 ```bash
-mkdir -p ppipe_input/panTro3
-mkdir -p ppipe_output/panTro3
+mkdir ppipe_input
+mkdir ppipe_output
+```
+
+Create a species directory in the input and output
+```bash
+mkdir ppipe_input/panTro3
+mkdir ppipe_output/panTro3
 ```
 
 ## Step 3. Download ENSEMBL Data
@@ -60,23 +75,28 @@ cd ppipe_input/panTro3
 mkdir dna pep mysql
 ```
 
-Download DNA files (do not decompress .gz):
+Download DNA files into the dna directory (do not decompress .gz):
 
 ```bash
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/pan_troglodytes/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa.gz -P dna/
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/pan_troglodytes/dna/Pan_troglodytes.Pan_tro_3.0.dna_rm.chromosome.*.fa.gz -P dna/
 ```
 
-Download peptide file:
+Download peptide file into the pep directory:
 
 ```bash
 wget ftp://ftp.ensembl.org/pub/release-99/fasta/pan_troglodytes/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa.gz -P pep/
 ```
 
-Download MySQL annotation files into mysql/.
+Download MySQL annotation files into the mysql directory: 
 
 ```bash
-wget ftp://ftp.ensembl.org/pub/release-99/mysql/ -P mysql/
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/exon_transcript.txt.gz 
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/exon.txt.gz
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/pan_troglodytes_core_99_3.sql.gz
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/seq_region.txt.gz
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/transcript.txt.gz
+ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/translation.txt.gz
 ```
 
 ## Step 4. Process ENSEMBL Files
@@ -84,8 +104,8 @@ Activate your Conda environment if not already active:
 
 ```bash
 conda activate pseudopipe-env
-Process files to format genome database for BLAST:
 ```
+Process files to format genome database for BLAST:
 
 ```bash
 cd ppipe_input/panTro3
