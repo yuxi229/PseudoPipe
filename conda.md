@@ -6,7 +6,8 @@ Here shows an example of using PseudoPipe to predict pseudogenes in chimpanzee.
 
 To cite Pseudopipe, please refer to the following publication:
 
-Zhang Z, Carriero N, Zheng D, Karro J, Harrison PM, Gerstein M. PseudoPipe: an automated pseudogene identification pipeline. Bioinformatics. 2006 Jun 15;22(12):1437-9.
+> **Citation**  
+> Zhang Z, Carriero N, Zheng D, Karro J, Harrison PM, Gerstein M. *PseudoPipe: an automated pseudogene identification pipeline*. Bioinformatics. 2006 Jun 15;22(12):1437-9.
 
 ---
 
@@ -41,6 +42,7 @@ Optional: Create and activate environment from environment.yml
 conda env create -f environment.yml
 conda activate pseudopipe-env
 ```
+---
 
 ## Step 2. Prepare Working Directories
 
@@ -55,6 +57,7 @@ Create a species directory in the input and output
 mkdir ppipe_input/panTro3
 mkdir ppipe_output/panTro3
 ```
+---
 
 ## Step 3. Download ENSEMBL Data
 ### Option A: Use built-in downloader CLI (recommended)
@@ -98,6 +101,7 @@ ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/seq_region.
 ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/transcript.txt.gz
 ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/translation.txt.gz
 ```
+---
 
 ## Step 4. Process ENSEMBL Files
 Activate your Conda environment if not already active:
@@ -118,6 +122,7 @@ If missing, create BLAST database manually:
 ```bash
 makeblastdb -in dna_rm.fa -dbtype nucl -out dna_rm
 ```
+---
 
 ## Step 5. Create Output Directories and Generate BLAST Jobs
 Run the main pipeline script:
@@ -145,10 +150,14 @@ split peptide files named split*
 jobs
 directories: output/, processed/, stamps/, status/
 
+---
+
 ## Step 6. Submit and Run BLAST Jobs
 Submit the jobs generated in blast/jobs (using your HPC scheduler).
 
 Wait for completion; .out files will appear in blast/output/.
+
+---
 
 ## Step 7. Process BLAST Output
 
@@ -158,7 +167,7 @@ cd ppipe_output/panTro3/blast/processed
 
 Create job list to process BLAST results:
 
-bash
+```bash
 echo "cd $(pwd); pseudopipe-processBlastOutputs \
   ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
   'split\\d{4}.Out\\Z' \
@@ -166,6 +175,8 @@ echo "cd $(pwd); pseudopipe-processBlastOutputs \
 ```
 
 Submit jobs using your scheduler.
+
+---
 
 ## Step 8. Run PseudoPipe on Minus Strand
 Set pipeline environment variables in setenvPipelineVars.sh:
@@ -195,6 +206,8 @@ done > jobs
 
 Submit jobs.
 
+---
+
 ## Step 9. Run PseudoPipe on Plus Strand
 Set setenvPipelineVars.sh with plus strand BLAST files:
 
@@ -216,6 +229,8 @@ done > jobs
 
 Submit jobs.
 
+---
+
 ## Step 10. Generate Final Results
 Generate pseudogene annotation file:
 
@@ -233,6 +248,7 @@ Generate exon annotation file:
 ```bash
 pseudopipe-genPgeneResultExon ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pexon.txt
 ```
+---
 
 Notes
 TFASTY from the FASTA suite is not included in the Conda package due to licensing.
