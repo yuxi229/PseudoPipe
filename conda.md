@@ -37,7 +37,7 @@ conda install -c yuxi229 pseudopipe
 conda install conda-build
 
 # Clone your repo
-git clone https://github.com/<your-username>/PseudoPipe.git
+git clone https://github.com/yuxi229/PseudoPipe.git
 cd PseudoPipe
 
 # Build the package locally
