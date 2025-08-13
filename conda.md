@@ -77,7 +77,7 @@ mkdir ppipe_output/panTro3
 ### Option A: Use built-in downloader CLI (recommended)
 
 ```bash
-cd ppipe_input
+cd ppipe_input/panTro3
 pseudopipe-downloadFiles ./
 ```
 1. Follow prompts to select Ensembl release (leave blank for latest).
