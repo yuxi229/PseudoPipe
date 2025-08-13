@@ -136,6 +136,7 @@ If missing, create BLAST database manually:
 ```bash
 makeblastdb -in dna_rm.fa -dbtype nucl -out dna_rm
 ```
+CHECK THIS ^
 ---
 
 ## Step 5. Create Output Directories and Generate BLAST Jobs
