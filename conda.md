@@ -32,20 +32,25 @@ conda install -c yuxi229 pseudopipe
 ```
 ### Option B: Build from source using conda-build
 
+Install conda-build if not already installed
 ```bash
-# Install conda-build if not already installed
 conda install conda-build
+```
 
-# Clone your repo
+Clone your repo
+
+```bash
 git clone https://github.com/yuxi229/PseudoPipe.git
 cd PseudoPipe
+```
 
-# Build the package locally
+Build the package locally
+```bash
 conda build recipe/
+```
+Install the built package into a new environment
 
-# Install the built package into a new environment
-# Optional: Create and activate environment from environment.yml
-
+```bash
 conda create -n pseudopipe-env python=3.11
 conda activate pseudopipe-env
 conda install --use-local pseudopipe
