@@ -116,15 +116,6 @@ ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/transcript.
 ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/translation.txt.gz
 ```
 
-```bash
-pseudopipe-ppipe \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_output/panTro3 \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/dna_rm.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/mysql/chr*_exLocs \
-  0
-```
 ---
 
 ## Step 4. Process ENSEMBL Files
@@ -159,6 +150,15 @@ pseudopipe-ppipe \
   ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa \
   ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
   ppipe_input/panTro3/mysql/chr*_exLocs \
+  0
+```
+```bash
+pseudopipe-ppipe \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_output/panTro3 \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/dna_rm.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/mysql/chr*_exLocs \
   0
 ```
 
