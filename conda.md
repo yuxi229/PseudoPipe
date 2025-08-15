@@ -78,7 +78,7 @@ mkdir ppipe_output/panTro3
 
 ```bash
 cd ppipe_input/panTro3
-pseudopipe-downloadFiles ./
+downloadFiles.sh
 ```
 1. Follow prompts to select Ensembl release (leave blank for latest). TYPE 114 FOR NOW, IT THINKS 115 IS LATEST RELEASE BUT ITS NOT
 2. Choose species (e.g., pan_troglodytes).
