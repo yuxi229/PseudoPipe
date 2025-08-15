@@ -128,7 +128,7 @@ Process files to format genome database for BLAST:
 
 ```bash
 cd ppipe_input/panTro3
-pseudopipe-processEnsemblFiles ./
+processEnsemblFiles.sh ./
 ```
 
 Check that masked DNA database files exist (dna_rm.fa, .nhr, .nin, .nsq, etc.).
