@@ -154,11 +154,11 @@ pseudopipe-ppipe \
 ```
 ```bash
 pseudopipe-ppipe \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_output/panTro3 \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/dna_rm.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_test/ppipe_input/panTro3/mysql/chr*_exLocs \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_output/panTro3 \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/dna/dna_rm.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.*.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/pep/Homo_sapiens.GRCh38.pep.all.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/mysql/chr*_exLocs \
   0
 ```
 
