@@ -194,9 +194,9 @@ Create job list to process BLAST results:
 
 ```bash
 echo "cd $(pwd); pseudopipe-processBlastOutputs \
-  ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
+  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/pep/Homo_sapiens.GRCh38.pep.all.fa \
   'split\\d{4}.Out\\Z' \
-  ppipe_output ; touch processed.stamp" > jobs
+  ../output ; touch processed.stamp" > jobs
 ```
 
 Submit jobs using your scheduler.
