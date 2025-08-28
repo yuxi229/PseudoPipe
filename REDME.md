@@ -25,11 +25,16 @@ To cite Pseudopipe, please refer to the following publication:
 
 ### Option A: Install from Conda channel (recommended)
 
-You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel:
+You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel (recommended):
 
 ```bash
 conda install -c yuxi229 pseudopipe
 ```
+
+```bash
+conda install -c bioconda blast=2.16.0
+```
+
 ### Option B: Build from source using conda-build
 
 Install conda-build if not already installed
@@ -217,7 +222,7 @@ cat > setenvPipelineVars.sh << EOF
 #!/bin/bash
 export dataDir="$OUTPUT_DIR"
 export BlastoutSortedTemplate="$OUTPUT_DIR/blast/processed/%s_M_blastHits.sorted"
-export ChromosomeFastaTemplate="$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna.chromosome.1.fa"
+export ChromosomeFastaTemplate="$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna.chromosome.%s.fa"
 export ExonMaskTemplate="$INPUT_DIR/mysql/chr%s_exLocs"
 export ExonMaskFields='2 3'
 export FastaProgram="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/PseudoPipe/dependencies/fasta-35.1.5/tfasty35"
@@ -239,20 +244,35 @@ done > jobs
 
 Submit jobs.
 
+You should see pgenes, pexons, polya directories on success. (Check log if errors occur) 
+
 ---
 
 ## Step 9. Run PseudoPipe on Plus Strand
-Set setenvPipelineVars.sh with plus strand BLAST files:
+Create and source the environment file setenvPipelineVars.sh:
 
 ```bash
-export BlastoutSortedTemplate=${dataDir}/blast/processed/%s_P_blastHits.sorted
+cd "$OUTPUT_DIR/pgenes/plus"
 ```
 
-Create and submit jobs similarly:
+```bash
+cat > setenvPipelineVars.sh << EOF
+#!/bin/bash
+export dataDir="$OUTPUT_DIR"
+export BlastoutSortedTemplate="$OUTPUT_DIR/blast/processed/%s_P_blastHits.sorted"
+export ChromosomeFastaTemplate="$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna.chromosome.%s.fa"
+export ExonMaskTemplate="$INPUT_DIR/mysql/chr%s_exLocs"
+export ExonMaskFields='2 3'
+export FastaProgram="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/PseudoPipe/dependencies/fasta-35.1.5/tfasty35"
+export ProteinQueryFile="$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa"
+EOF
+
+source setenvPipelineVars.sh
+```
+
+Create jobs:
 
 ```bash
-cd ppipe_output/panTro3/pgenes/plus
-
 ms=$(cd ../../blast/processed; for f in *_P_*sorted; do echo ${f/_P_blastHits.sorted/}; done)
 
 for c in $ms; do
@@ -268,18 +288,18 @@ Submit jobs.
 Generate pseudogene annotation file:
 
 ```bash
-pseudopipe-genPgeneResult ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pgene.txt
+pseudopipe-genPgeneResult $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pgene.txt
 Generate pseudogene alignment file:
 ```
 
 ```bash
-pseudopipe-genFullAln ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pgene.align.gz
+pseudopipe-genFullAln $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pgene.align.gz
 ```
 
 Generate exon annotation file:
 
 ```bash
-pseudopipe-genPgeneResultExon ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pexon.txt
+pseudopipe-genPgeneResultExon $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pexon.txt
 ```
 ---
 
