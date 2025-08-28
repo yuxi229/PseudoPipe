@@ -9,6 +9,10 @@ To cite Pseudopipe, please refer to the following publication:
 > **Citation**  
 > Zhang Z, Carriero N, Zheng D, Karro J, Harrison PM, Gerstein M. *PseudoPipe: an automated pseudogene identification pipeline*. Bioinformatics. 2006 Jun 15;22(12):1437-9.
 
+For more information visit http://www.pseudogene.org/pseudopipe/ 
+
+To view instructions on installation and usage without conda please view ... 
+
 ---
 
 ## Step 0. Requirements
