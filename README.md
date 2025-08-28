@@ -11,7 +11,7 @@ To cite Pseudopipe, please refer to the following publication:
 
 For more information visit http://www.pseudogene.org/pseudopipe/ 
 
-To view instructions on installation and usage without conda please view ... 
+For instructions on installation and usage **without conda** please view ... 
 
 ---
 
