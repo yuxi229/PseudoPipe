@@ -124,11 +124,14 @@ Activate your Conda environment if not already active:
 ```bash
 conda activate pseudopipe-env
 ```
-Configure variables
+Permanently export the path to your input and output directories
 ```bash
-INPUT_DIR="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3"
-OUTPUT_DIR="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_output/panTro3"
-export INPUT_DIR OUTPUT_DIR
+# Add to your ~/.bashrc or ~/.bash_profile
+echo 'export INPUT_DIR="pathTo/ppipe_input/panTro3"' >> ~/.bashrc
+echo 'export OUTPUT_DIR="pathTo/conda_new/ppipe_output/panTro3"' >> ~/.bashrc
+
+# Reload your bashrc
+source ~/.bashrc
 
 ```
 
