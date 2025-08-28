@@ -25,11 +25,16 @@ To cite Pseudopipe, please refer to the following publication:
 
 ### Option A: Install from Conda channel (recommended)
 
-You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel:
+You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel (recommended):
 
 ```bash
 conda install -c yuxi229 pseudopipe
 ```
+
+```bash
+conda install -c bioconda blast=2.16.0
+```
+
 ### Option B: Build from source using conda-build
 
 Install conda-build if not already installed
@@ -124,6 +129,17 @@ Activate your Conda environment if not already active:
 ```bash
 conda activate pseudopipe-env
 ```
+Permanently export the path to your input and output directories
+```bash
+# Add to your ~/.bashrc or ~/.bash_profile
+echo 'export INPUT_DIR="pathTo/ppipe_input/panTro3"' >> ~/.bashrc
+echo 'export OUTPUT_DIR="pathTo/conda_new/ppipe_output/panTro3"' >> ~/.bashrc
+
+# Reload your bashrc
+source ~/.bashrc
+
+```
+
 Process files to format genome database for BLAST:
 
 ```bash
@@ -145,21 +161,12 @@ Run the main pipeline script:
 
 ```bash
 pseudopipe-ppipe \
-  ppipe_output/panTro3 \
-  ppipe_input/panTro3/dna/dna_rm.fa \
-  ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.*.fa \
-  ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa \
-  ppipe_input/panTro3/mysql/chr*_exLocs \
-  0
-```
-```bash
-pseudopipe-ppipe \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_output/panTro3 \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/dna/dna_rm.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.*.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/pep/Homo_sapiens.GRCh38.pep.all.fa \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/mysql/chr*_exLocs \
-  0
+    "$OUTPUT_DIR" \
+    "$INPUT_DIR/dna/dna_rm.fa" \
+    "$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.*.fa" \
+    "$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa" \
+    "$INPUT_DIR/mysql/chr*_exLocs" \
+    0
 ```
 
 Check that the following directories are created inside ppipe_output/panTro3:
@@ -187,16 +194,16 @@ Wait for completion; .out files will appear in blast/output/.
 ## Step 7. Process BLAST Output
 
 ```bash
-cd ppipe_output/panTro3/blast/processed
+cd "$OUTPUT_DIR/blast/processed"
 ```
 
 Create job list to process BLAST results:
 
 ```bash
 echo "cd $(pwd); pseudopipe-processBlastOutputs \
-  /gpfs/gibbs/pi/gerstein/yz2478/conda_new/ppipe_input/panTro3/pep/Homo_sapiens.GRCh38.pep.all.fa \
-  'split\\d{4}.Out\\Z' \
-  ../output ; touch processed.stamp" > jobs
+    "$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa" \
+    'split\d{4}.Out\Z' \
+    ../output; touch processed.stamp" > jobs
 ```
 
 Submit jobs using your scheduler.
@@ -204,24 +211,30 @@ Submit jobs using your scheduler.
 ---
 
 ## Step 8. Run PseudoPipe on Minus Strand
-Set pipeline environment variables in setenvPipelineVars.sh:
+Create and source the environment file setenvPipelineVars.sh:
 
 ```bash
-dataDir=ppipe_output/panTro3
+cd "$OUTPUT_DIR/pgenes/minus"
+```
 
-export BlastoutSortedTemplate=${dataDir}/blast/processed/%s_M_blastHits.sorted
-export ChromosomeFastaTemplate=ppipe_input/panTro3/dna/Pan_troglodytes.Pan_tro_3.0.dna.chromosome.%s.fa
-export ExonMaskTemplate=ppipe_input/panTro3/mysql/chr%s_exLocs
+```bash
+cat > setenvPipelineVars.sh << EOF
+#!/bin/bash
+export dataDir="$OUTPUT_DIR"
+export BlastoutSortedTemplate="$OUTPUT_DIR/blast/processed/%s_M_blastHits.sorted"
+export ChromosomeFastaTemplate="$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna.chromosome.%s.fa"
+export ExonMaskTemplate="$INPUT_DIR/mysql/chr%s_exLocs"
 export ExonMaskFields='2 3'
-export FastaProgram=path/to/tfasty35     # Install FASTA suite manually
-export ProteinQueryFile=ppipe_input/panTro3/pep/Pan_troglodytes.Pan_tro_3.0.pep.all.fa
+export FastaProgram="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/PseudoPipe/dependencies/fasta-35.1.5/tfasty35"
+export ProteinQueryFile="$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa"
+EOF
+
+source setenvPipelineVars.sh
 ```
 
 Create jobs:
 
 ```bash
-cd ppipe_output/panTro3/pgenes/minus
-
 ms=$(cd ../../blast/processed; for f in *_M_*sorted; do echo ${f/_M_blastHits.sorted/}; done)
 
 for c in $ms; do
@@ -231,20 +244,35 @@ done > jobs
 
 Submit jobs.
 
+You should see pgenes, pexons, polya directories on success. (Check log if errors occur) 
+
 ---
 
 ## Step 9. Run PseudoPipe on Plus Strand
-Set setenvPipelineVars.sh with plus strand BLAST files:
+Create and source the environment file setenvPipelineVars.sh:
 
 ```bash
-export BlastoutSortedTemplate=${dataDir}/blast/processed/%s_P_blastHits.sorted
+cd "$OUTPUT_DIR/pgenes/plus"
 ```
 
-Create and submit jobs similarly:
+```bash
+cat > setenvPipelineVars.sh << EOF
+#!/bin/bash
+export dataDir="$OUTPUT_DIR"
+export BlastoutSortedTemplate="$OUTPUT_DIR/blast/processed/%s_P_blastHits.sorted"
+export ChromosomeFastaTemplate="$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna.chromosome.%s.fa"
+export ExonMaskTemplate="$INPUT_DIR/mysql/chr%s_exLocs"
+export ExonMaskFields='2 3'
+export FastaProgram="/gpfs/gibbs/pi/gerstein/yz2478/conda_new/PseudoPipe/dependencies/fasta-35.1.5/tfasty35"
+export ProteinQueryFile="$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa"
+EOF
+
+source setenvPipelineVars.sh
+```
+
+Create jobs:
 
 ```bash
-cd ppipe_output/panTro3/pgenes/plus
-
 ms=$(cd ../../blast/processed; for f in *_P_*sorted; do echo ${f/_P_blastHits.sorted/}; done)
 
 for c in $ms; do
@@ -260,18 +288,18 @@ Submit jobs.
 Generate pseudogene annotation file:
 
 ```bash
-pseudopipe-genPgeneResult ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pgene.txt
+pseudopipe-genPgeneResult $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pgene.txt
 Generate pseudogene alignment file:
 ```
 
 ```bash
-pseudopipe-genFullAln ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pgene.align.gz
+pseudopipe-genFullAln $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pgene.align.gz
 ```
 
 Generate exon annotation file:
 
 ```bash
-pseudopipe-genPgeneResultExon ppipe_output/panTro3 Pan_troglodytes.Pan_tro_3.0.pexon.txt
+pseudopipe-genPgeneResultExon $OUTPUT_DIR Homo_sapiens.Homo_sapiens_3.0.pexon.txt
 ```
 ---
 
