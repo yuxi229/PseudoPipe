@@ -2,7 +2,7 @@
 
 When you predict pseudogenes using PseudoPipe first time, we suggest you to run PseudoPipe step by step.
 
-Here shows an example of using PseudoPipe to predict pseudogenes in chimpanzee.
+Here shows an example of using PseudoPipe to predict pseudogenes in humans.
 
 To cite Pseudopipe, please refer to the following publication:
 
