@@ -9,7 +9,7 @@ To cite Pseudopipe, please refer to the following publication:
 > **Citation**  
 > Zhang Z, Carriero N, Zheng D, Karro J, Harrison PM, Gerstein M. *PseudoPipe: an automated pseudogene identification pipeline*. Bioinformatics. 2006 Jun 15;22(12):1437-9.
 
-For more information visit http://www.pseudogene.org/pseudopipe/ 
+For more information visit http://www.pseudogene.org/pseudopipe/ and https://www.gersteinlab.org/
 
 For instructions on installation and usage **without conda** please view ... 
 
@@ -69,35 +69,33 @@ conda install --use-local pseudopipe
 
 ## Step 2. Prepare Working Directories
 
- Create an input and output directories
+ Create an input and output directories and a species directory in the input and output
 ```bash
 mkdir ppipe_input
 mkdir ppipe_output
+mkdir ppipe_input/human
+mkdir ppipe_output/human
+
 ```
 
-Create a species directory in the input and output
-```bash
-mkdir ppipe_input/panTro3
-mkdir ppipe_output/panTro3
-```
 ---
 
 ## Step 3. Download ENSEMBL Data
 ### Option A: Use built-in downloader CLI (recommended)
 
 ```bash
-cd ppipe_input/panTro3
-downloadFiles.sh
+cd ppipe_input/human
+pseudopipe-downloadFiles ./
 ```
 1. Follow prompts to select Ensembl release (leave blank for latest). TYPE 114 FOR NOW, IT THINKS 115 IS LATEST RELEASE BUT ITS NOT
-2. Choose species (e.g., pan_troglodytes).
+2. Choose species (e.g., homo_sapiens).
 
 Files will download into the respective species directory.
 
 ### Option B: Manual download (for species not listed)
 
 ```bash
-cd ppipe_input/panTro3
+cd ppipe_input/human
 mkdir dna pep mysql
 ```
 
@@ -136,8 +134,8 @@ conda activate pseudopipe-env
 Permanently export the path to your input and output directories
 ```bash
 # Add to your ~/.bashrc or ~/.bash_profile
-echo 'export INPUT_DIR="pathTo/ppipe_input/panTro3"' >> ~/.bashrc
-echo 'export OUTPUT_DIR="pathTo/conda_new/ppipe_output/panTro3"' >> ~/.bashrc
+echo 'export INPUT_DIR="pathTo/ppipe_input/human"' >> ~/.bashrc
+echo 'export OUTPUT_DIR="pathTo/conda_new/ppipe_output/human"' >> ~/.bashrc
 
 # Reload your bashrc
 source ~/.bashrc
@@ -147,8 +145,8 @@ source ~/.bashrc
 Process files to format genome database for BLAST:
 
 ```bash
-cd ppipe_input/panTro3
-processEnsemblFiles.sh ./
+cd $INPUT_DIR
+pseudopipe-processEnsemblFiles ./
 ```
 
 Check that masked DNA database files exist (dna_rm.fa, .nhr, .nin, .nsq, etc.).
@@ -211,6 +209,7 @@ echo "cd $(pwd); pseudopipe-processBlastOutputs \
 ```
 
 Submit jobs using your scheduler.
+There should be files in the processed directory. 
 
 ---
 
