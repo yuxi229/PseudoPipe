@@ -25,45 +25,7 @@ For instructions on installation and usage **without conda** please view ...
 
 ---
 
-## Step 1. Install PseudoPipe via Conda
-
-### Option A: Install from Conda channel (recommended)
-
-You can install **PseudoPipe** directly via Conda from the `yuxizhang` channel (recommended):
-
-```bash
-conda install -c yuxi229 pseudopipe
-```
-
-```bash
-conda install -c bioconda blast=2.16.0
-```
-
-### Option B: Build from source using conda-build
-
-Install conda-build if not already installed
-```bash
-conda install conda-build
-```
-
-Clone your repo
-
-```bash
-git clone https://github.com/yuxi229/PseudoPipe.git
-cd PseudoPipe
-```
-
-Build the package locally
-```bash
-conda build recipe/
-```
-Install the built package into a new environment
-
-```bash
-conda create -n pseudopipe-env python=3.11
-conda activate pseudopipe-env
-conda install --use-local pseudopipe
-```
+## Step 1. Clone the repo 
 
 ---
 
@@ -85,14 +47,14 @@ mkdir ppipe_output/human
 
 ```bash
 cd ppipe_input/human
-pseudopipe-downloadFiles ./
+pathTo/PseudoPipe/bin/downloadFiles.sh
 ```
-1. Follow prompts to select Ensembl release (leave blank for latest). TYPE 114 FOR NOW, IT THINKS 115 IS LATEST RELEASE BUT ITS NOT
-2. Choose species (e.g., homo_sapiens).
+1. Follow prompts to select species (exact, official species name is required) 
+2. Follow prompts to select release 
 
 Files will download into the respective species directory.
 
-### Option B: Manual download (for species not listed)
+### Option B: Manual download 
 
 ```bash
 cd ppipe_input/human
