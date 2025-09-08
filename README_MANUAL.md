@@ -47,7 +47,7 @@ mkdir ppipe_output/human
 
 ```bash
 cd ppipe_input/human
-pathTo/PseudoPipe/bin/downloadFiles.sh
+pathTo/PseudoPipe/bin/downloadFiles.sh ./ 
 ```
 1. Follow prompts to select species (exact, official species name is required) 
 2. Follow prompts to select release 
@@ -88,19 +88,37 @@ ftp://ftp.ensembl.org/pub/release-99/mysql/pan_troglodytes_core_99_3/translation
 ---
 
 ## Step 4. Process ENSEMBL Files
-Activate your Conda environment if not already active:
+Set the env.sh and put in the same dir as processEnsemblFiles.sh
+It should be in pathTo/PseudoPipe/bin/env.sh 
 
 ```bash
-conda activate pseudopipe-env
+cd pathTo/PseudoPipe/bin
+nano env.sh 
 ```
-Permanently export the path to your input and output directories
-```bash
-# Add to your ~/.bashrc or ~/.bash_profile
-echo 'export INPUT_DIR="pathTo/ppipe_input/human"' >> ~/.bashrc
-echo 'export OUTPUT_DIR="pathTo/conda_new/ppipe_output/human"' >> ~/.bashrc
 
-# Reload your bashrc
-source ~/.bashrc
+```bash
+#!/bin/sh
+
+if [ ! -z "$PSEUDOPIPE_ENV" ]; then source $PSEUDOPIPE_ENV; return; fi
+
+# Pseudopipe configuration
+export PSEUDOPIPE_HOME=`cd \`dirname $0\`/../; pwd`
+export pseudopipe=$PSEUDOPIPE_HOME/core/runScripts.py
+export genPgeneResult=$PSEUDOPIPE_HOME/ext/genPgeneResult.sh
+export genFullAln=$PSEUDOPIPE_HOME/ext/genFullAln.sh
+export fastaSplitter=$PSEUDOPIPE_HOME/ext/splitFasta.py
+export sqDedicated=$PSEUDOPIPE_HOME/ext/sqDedicated.py
+export sqDummy=$PSEUDOPIPE_HOME/ext/sqDummy.py
+export blastHandler=$PSEUDOPIPE_HOME/core/processBlastOutput.py
+export extractExLoc=$PSEUDOPIPE_HOME/core/extractKPExonLocations-Aug2016.py
+
+# Python configuration
+export pythonExec=/bin/python3
+
+# Alignment tools configuration
+export makeblastdb=pathTo/blast-2.2.13/bin/formatdb
+export blastExec=pathTo/blast-2.2.13/bin/blastall
+export fastaExec=pathTo/fasta-35.1.5/tfasty35
 
 ```
 
