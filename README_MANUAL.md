@@ -169,6 +169,16 @@ pathTo/PseudoPipe/ext/ppipe.sh \
     0
 ```
 
+```bash
+/gpfs/gibbs/pi/gerstein/yz2478/oldpy_newblast/PseudoPipe/ext/ppipe.sh \
+    "$OUTPUT_DIR" \
+    "$INPUT_DIR/dna/dna_rm.fa" \
+    "$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.*.fa" \
+    "$INPUT_DIR/pep/Homo_sapiens.GRCh38.pep.all.fa" \
+    "$INPUT_DIR/mysql/chr*_exLocs" \
+    0
+```
+
 Check that the following directories are created inside ppipe_output/panTro3:
 
 blast
