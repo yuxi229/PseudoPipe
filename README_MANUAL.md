@@ -126,23 +126,23 @@ Process files to format genome database for BLAST:
 
 ```bash
 cd $INPUT_DIR
-pseudopipe-processEnsemblFiles ./
+pathTo/PseudoPipe/bin/processEnsemblFiles.sh ./
 ```
 
 Check that masked DNA database files exist (dna_rm.fa, .nhr, .nin, .nsq, etc.).
 If missing, create BLAST database manually:
 
 ```bash
-makeblastdb -in dna_rm.fa -dbtype nucl -out dna_rm
+makeblastdb -in dna_rm.fa -dbtype nucl -out dna_rm \
+    -parse_seqids -blastdb_version 5
 ```
-CHECK THIS ^
 ---
 
 ## Step 5. Create Output Directories and Generate BLAST Jobs
 Run the main pipeline script:
 
 ```bash
-pseudopipe-ppipe \
+pathTo/PseudoPipe/ext/ppipe.sh \
     "$OUTPUT_DIR" \
     "$INPUT_DIR/dna/dna_rm.fa" \
     "$INPUT_DIR/dna/Homo_sapiens.GRCh38.dna_rm.chromosome.*.fa" \
