@@ -96,6 +96,24 @@ cd pathTo/PseudoPipe/bin
 nano env.sh 
 ```
 
+Permanently export the path to your input and output directories
+```bash
+# Add to your ~/.bashrc or ~/.bash_profile
+echo 'export INPUT_DIR="/gpfs/gibbs/pi/gerstein/yz2478/oldpy_newblast/ppipe_input/human"' >> ~/.bashrc
+echo 'export OUTPUT_DIR="/gpfs/gibbs/pi/gerstein/yz2478/oldpy_newblast/ppipe_output/human"' >> ~/.bashrc
+
+# Reload your bashrc
+source ~/.bashrc
+
+```
+
+Process files to format genome database for BLAST:
+
+```bash
+cd $INPUT_DIR
+pseudopipe-processEnsemblFiles ./
+```
+
 ```bash
 #!/bin/sh
 
